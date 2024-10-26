@@ -27,7 +27,7 @@ export function SelectLocation({ locations }: SelectLocationProps) {
 
   const handleSearch = () => {
     if (selectedLocation) {
-      router.push(`/search?location=${encodeURIComponent(selectedLocation)}`);
+      router.push(`/services`);
     }
   };
 
