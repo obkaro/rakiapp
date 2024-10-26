@@ -12,14 +12,13 @@ export interface Config {
   };
   collections: {
     pages: Page;
-    posts: Post;
+    services: Service;
     media: Media;
     categories: Category;
     users: User;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
-    search: Search;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -218,6 +217,339 @@ export interface ContentBlock {
           label: string;
           appearance?: ('default' | 'outline') | null;
         };
+        enableIcon?: boolean | null;
+        icon?: {
+          name?:
+            | (
+                | 'AcademicCapIcon'
+                | 'AdjustmentsHorizontalIcon'
+                | 'AdjustmentsVerticalIcon'
+                | 'ArchiveBoxArrowDownIcon'
+                | 'ArchiveBoxIcon'
+                | 'ArchiveBoxXMarkIcon'
+                | 'ArrowDownCircleIcon'
+                | 'ArrowDownIcon'
+                | 'ArrowDownLeftIcon'
+                | 'ArrowDownOnSquareIcon'
+                | 'ArrowDownOnSquareStackIcon'
+                | 'ArrowDownRightIcon'
+                | 'ArrowDownTrayIcon'
+                | 'ArrowLeftCircleIcon'
+                | 'ArrowLeftEndOnRectangleIcon'
+                | 'ArrowLeftIcon'
+                | 'ArrowLeftOnRectangleIcon'
+                | 'ArrowLeftStartOnRectangleIcon'
+                | 'ArrowLongDownIcon'
+                | 'ArrowLongLeftIcon'
+                | 'ArrowLongRightIcon'
+                | 'ArrowLongUpIcon'
+                | 'ArrowPathIcon'
+                | 'ArrowPathRoundedSquareIcon'
+                | 'ArrowRightCircleIcon'
+                | 'ArrowRightEndOnRectangleIcon'
+                | 'ArrowRightIcon'
+                | 'ArrowRightOnRectangleIcon'
+                | 'ArrowRightStartOnRectangleIcon'
+                | 'ArrowSmallDownIcon'
+                | 'ArrowSmallLeftIcon'
+                | 'ArrowSmallRightIcon'
+                | 'ArrowSmallUpIcon'
+                | 'ArrowTopRightOnSquareIcon'
+                | 'ArrowTrendingDownIcon'
+                | 'ArrowTrendingUpIcon'
+                | 'ArrowTurnDownLeftIcon'
+                | 'ArrowTurnDownRightIcon'
+                | 'ArrowTurnLeftDownIcon'
+                | 'ArrowTurnLeftUpIcon'
+                | 'ArrowTurnRightDownIcon'
+                | 'ArrowTurnRightUpIcon'
+                | 'ArrowTurnUpLeftIcon'
+                | 'ArrowTurnUpRightIcon'
+                | 'ArrowUpCircleIcon'
+                | 'ArrowUpIcon'
+                | 'ArrowUpLeftIcon'
+                | 'ArrowUpOnSquareIcon'
+                | 'ArrowUpOnSquareStackIcon'
+                | 'ArrowUpRightIcon'
+                | 'ArrowUpTrayIcon'
+                | 'ArrowUturnDownIcon'
+                | 'ArrowUturnLeftIcon'
+                | 'ArrowUturnRightIcon'
+                | 'ArrowUturnUpIcon'
+                | 'ArrowsPointingInIcon'
+                | 'ArrowsPointingOutIcon'
+                | 'ArrowsRightLeftIcon'
+                | 'ArrowsUpDownIcon'
+                | 'AtSymbolIcon'
+                | 'BackspaceIcon'
+                | 'BackwardIcon'
+                | 'BanknotesIcon'
+                | 'Bars2Icon'
+                | 'Bars3BottomLeftIcon'
+                | 'Bars3BottomRightIcon'
+                | 'Bars3CenterLeftIcon'
+                | 'Bars3Icon'
+                | 'Bars4Icon'
+                | 'BarsArrowDownIcon'
+                | 'BarsArrowUpIcon'
+                | 'Battery0Icon'
+                | 'Battery100Icon'
+                | 'Battery50Icon'
+                | 'BeakerIcon'
+                | 'BellAlertIcon'
+                | 'BellIcon'
+                | 'BellSlashIcon'
+                | 'BellSnoozeIcon'
+                | 'BoldIcon'
+                | 'BoltIcon'
+                | 'BoltSlashIcon'
+                | 'BookOpenIcon'
+                | 'BookmarkIcon'
+                | 'BookmarkSlashIcon'
+                | 'BookmarkSquareIcon'
+                | 'BriefcaseIcon'
+                | 'BugAntIcon'
+                | 'BuildingLibraryIcon'
+                | 'BuildingOffice2Icon'
+                | 'BuildingOfficeIcon'
+                | 'BuildingStorefrontIcon'
+                | 'CakeIcon'
+                | 'CalculatorIcon'
+                | 'CalendarDateRangeIcon'
+                | 'CalendarDaysIcon'
+                | 'CalendarIcon'
+                | 'CameraIcon'
+                | 'ChartBarIcon'
+                | 'ChartBarSquareIcon'
+                | 'ChartPieIcon'
+                | 'ChatBubbleBottomCenterIcon'
+                | 'ChatBubbleBottomCenterTextIcon'
+                | 'ChatBubbleLeftEllipsisIcon'
+                | 'ChatBubbleLeftIcon'
+                | 'ChatBubbleLeftRightIcon'
+                | 'ChatBubbleOvalLeftEllipsisIcon'
+                | 'ChatBubbleOvalLeftIcon'
+                | 'CheckBadgeIcon'
+                | 'CheckCircleIcon'
+                | 'CheckIcon'
+                | 'ChevronDoubleDownIcon'
+                | 'ChevronDoubleLeftIcon'
+                | 'ChevronDoubleRightIcon'
+                | 'ChevronDoubleUpIcon'
+                | 'ChevronDownIcon'
+                | 'ChevronLeftIcon'
+                | 'ChevronRightIcon'
+                | 'ChevronUpDownIcon'
+                | 'ChevronUpIcon'
+                | 'CircleStackIcon'
+                | 'ClipboardDocumentCheckIcon'
+                | 'ClipboardDocumentIcon'
+                | 'ClipboardDocumentListIcon'
+                | 'ClipboardIcon'
+                | 'ClockIcon'
+                | 'CloudArrowDownIcon'
+                | 'CloudArrowUpIcon'
+                | 'CloudIcon'
+                | 'CodeBracketIcon'
+                | 'CodeBracketSquareIcon'
+                | 'Cog6ToothIcon'
+                | 'Cog8ToothIcon'
+                | 'CogIcon'
+                | 'CommandLineIcon'
+                | 'ComputerDesktopIcon'
+                | 'CpuChipIcon'
+                | 'CreditCardIcon'
+                | 'CubeIcon'
+                | 'CubeTransparentIcon'
+                | 'CurrencyBangladeshiIcon'
+                | 'CurrencyDollarIcon'
+                | 'CurrencyEuroIcon'
+                | 'CurrencyPoundIcon'
+                | 'CurrencyRupeeIcon'
+                | 'CurrencyYenIcon'
+                | 'CursorArrowRaysIcon'
+                | 'CursorArrowRippleIcon'
+                | 'DevicePhoneMobileIcon'
+                | 'DeviceTabletIcon'
+                | 'DivideIcon'
+                | 'DocumentArrowDownIcon'
+                | 'DocumentArrowUpIcon'
+                | 'DocumentChartBarIcon'
+                | 'DocumentCheckIcon'
+                | 'DocumentCurrencyBangladeshiIcon'
+                | 'DocumentCurrencyDollarIcon'
+                | 'DocumentCurrencyEuroIcon'
+                | 'DocumentCurrencyPoundIcon'
+                | 'DocumentCurrencyRupeeIcon'
+                | 'DocumentCurrencyYenIcon'
+                | 'DocumentDuplicateIcon'
+                | 'DocumentIcon'
+                | 'DocumentMagnifyingGlassIcon'
+                | 'DocumentMinusIcon'
+                | 'DocumentPlusIcon'
+                | 'DocumentTextIcon'
+                | 'EllipsisHorizontalCircleIcon'
+                | 'EllipsisHorizontalIcon'
+                | 'EllipsisVerticalIcon'
+                | 'EnvelopeIcon'
+                | 'EnvelopeOpenIcon'
+                | 'EqualsIcon'
+                | 'ExclamationCircleIcon'
+                | 'ExclamationTriangleIcon'
+                | 'EyeDropperIcon'
+                | 'EyeIcon'
+                | 'EyeSlashIcon'
+                | 'FaceFrownIcon'
+                | 'FaceSmileIcon'
+                | 'FilmIcon'
+                | 'FingerPrintIcon'
+                | 'FireIcon'
+                | 'FlagIcon'
+                | 'FolderArrowDownIcon'
+                | 'FolderIcon'
+                | 'FolderMinusIcon'
+                | 'FolderOpenIcon'
+                | 'FolderPlusIcon'
+                | 'ForwardIcon'
+                | 'FunnelIcon'
+                | 'GifIcon'
+                | 'GiftIcon'
+                | 'GiftTopIcon'
+                | 'GlobeAltIcon'
+                | 'GlobeAmericasIcon'
+                | 'GlobeAsiaAustraliaIcon'
+                | 'GlobeEuropeAfricaIcon'
+                | 'H1Icon'
+                | 'H2Icon'
+                | 'H3Icon'
+                | 'HandRaisedIcon'
+                | 'HandThumbDownIcon'
+                | 'HandThumbUpIcon'
+                | 'HashtagIcon'
+                | 'HeartIcon'
+                | 'HomeIcon'
+                | 'HomeModernIcon'
+                | 'IdentificationIcon'
+                | 'InboxArrowDownIcon'
+                | 'InboxIcon'
+                | 'InboxStackIcon'
+                | 'InformationCircleIcon'
+                | 'ItalicIcon'
+                | 'KeyIcon'
+                | 'LanguageIcon'
+                | 'LifebuoyIcon'
+                | 'LightBulbIcon'
+                | 'LinkIcon'
+                | 'LinkSlashIcon'
+                | 'ListBulletIcon'
+                | 'LockClosedIcon'
+                | 'LockOpenIcon'
+                | 'MagnifyingGlassCircleIcon'
+                | 'MagnifyingGlassIcon'
+                | 'MagnifyingGlassMinusIcon'
+                | 'MagnifyingGlassPlusIcon'
+                | 'MapIcon'
+                | 'MapPinIcon'
+                | 'MegaphoneIcon'
+                | 'MicrophoneIcon'
+                | 'MinusCircleIcon'
+                | 'MinusIcon'
+                | 'MinusSmallIcon'
+                | 'MoonIcon'
+                | 'MusicalNoteIcon'
+                | 'NewspaperIcon'
+                | 'NoSymbolIcon'
+                | 'NumberedListIcon'
+                | 'PaintBrushIcon'
+                | 'PaperAirplaneIcon'
+                | 'PaperClipIcon'
+                | 'PauseCircleIcon'
+                | 'PauseIcon'
+                | 'PencilIcon'
+                | 'PencilSquareIcon'
+                | 'PercentBadgeIcon'
+                | 'PhoneArrowDownLeftIcon'
+                | 'PhoneArrowUpRightIcon'
+                | 'PhoneIcon'
+                | 'PhoneXMarkIcon'
+                | 'PhotoIcon'
+                | 'PlayCircleIcon'
+                | 'PlayIcon'
+                | 'PlayPauseIcon'
+                | 'PlusCircleIcon'
+                | 'PlusIcon'
+                | 'PlusSmallIcon'
+                | 'PowerIcon'
+                | 'PresentationChartBarIcon'
+                | 'PresentationChartLineIcon'
+                | 'PrinterIcon'
+                | 'PuzzlePieceIcon'
+                | 'QrCodeIcon'
+                | 'QuestionMarkCircleIcon'
+                | 'QueueListIcon'
+                | 'RadioIcon'
+                | 'ReceiptPercentIcon'
+                | 'ReceiptRefundIcon'
+                | 'RectangleGroupIcon'
+                | 'RectangleStackIcon'
+                | 'RocketLaunchIcon'
+                | 'RssIcon'
+                | 'ScaleIcon'
+                | 'ScissorsIcon'
+                | 'ServerIcon'
+                | 'ServerStackIcon'
+                | 'ShareIcon'
+                | 'ShieldCheckIcon'
+                | 'ShieldExclamationIcon'
+                | 'ShoppingBagIcon'
+                | 'ShoppingCartIcon'
+                | 'SignalIcon'
+                | 'SignalSlashIcon'
+                | 'SlashIcon'
+                | 'SparklesIcon'
+                | 'SpeakerWaveIcon'
+                | 'SpeakerXMarkIcon'
+                | 'Square2StackIcon'
+                | 'Square3Stack3DIcon'
+                | 'Squares2X2Icon'
+                | 'SquaresPlusIcon'
+                | 'StarIcon'
+                | 'StopCircleIcon'
+                | 'StopIcon'
+                | 'StrikethroughIcon'
+                | 'SunIcon'
+                | 'SwatchIcon'
+                | 'TableCellsIcon'
+                | 'TagIcon'
+                | 'TicketIcon'
+                | 'TrashIcon'
+                | 'TrophyIcon'
+                | 'TruckIcon'
+                | 'TvIcon'
+                | 'UnderlineIcon'
+                | 'UserCircleIcon'
+                | 'UserGroupIcon'
+                | 'UserIcon'
+                | 'UserMinusIcon'
+                | 'UserPlusIcon'
+                | 'UsersIcon'
+                | 'VariableIcon'
+                | 'VideoCameraIcon'
+                | 'VideoCameraSlashIcon'
+                | 'ViewColumnsIcon'
+                | 'ViewfinderCircleIcon'
+                | 'WalletIcon'
+                | 'WifiIcon'
+                | 'WindowIcon'
+                | 'WrenchIcon'
+                | 'WrenchScrewdriverIcon'
+                | 'XCircleIcon'
+                | 'XMarkIcon'
+              )
+            | null;
+          size?: ('sm' | 'md' | 'lg') | null;
+          color?: string | null;
+        };
         id?: string | null;
       }[]
     | null;
@@ -260,12 +592,6 @@ export interface ArchiveBlock {
   relationTo?: 'posts' | null;
   categories?: (string | Category)[] | null;
   limit?: number | null;
-  selectedDocs?:
-    | {
-        relationTo: 'posts';
-        value: string | Post;
-      }[]
-    | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'archive';
@@ -288,67 +614,6 @@ export interface Category {
     | null;
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "posts".
- */
-export interface Post {
-  id: string;
-  title: string;
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  relatedPosts?: (string | Post)[] | null;
-  categories?: (string | Category)[] | null;
-  meta?: {
-    title?: string | null;
-    image?: (string | null) | Media;
-    description?: string | null;
-  };
-  publishedAt?: string | null;
-  authors?: (string | User)[] | null;
-  populatedAuthors?:
-    | {
-        id?: string | null;
-        name?: string | null;
-      }[]
-    | null;
-  slug?: string | null;
-  slugLock?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
- */
-export interface User {
-  id: string;
-  name?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  password?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -542,6 +807,113 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services".
+ */
+export interface Service {
+  id: string;
+  title: string;
+  publishedOn?: string | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  gallery?:
+    | {
+        image: string | Media;
+        id?: string | null;
+      }[]
+    | null;
+  layout?: (CallToActionBlock | ContentBlock | MediaBlock)[] | null;
+  enableVariants?: boolean | null;
+  variants?: {
+    options?:
+      | {
+          label: string;
+          slug: string;
+          values?:
+            | {
+                label: string;
+                slug: string;
+                id?: string | null;
+              }[]
+            | null;
+          id?: string | null;
+        }[]
+      | null;
+    variants?:
+      | {
+          options: string[];
+          stripeProductID?: string | null;
+          stock: number;
+          info?:
+            | {
+                [k: string]: unknown;
+              }
+            | unknown[]
+            | string
+            | number
+            | boolean
+            | null;
+          images?:
+            | {
+                image?: (string | null) | Media;
+                id?: string | null;
+              }[]
+            | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  stripeProductID?: string | null;
+  info?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  stock?: number | null;
+  price?: number | null;
+  currency?: string | null;
+  categories?: (string | Category)[] | null;
+  skipSync?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: string;
+  name?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -549,15 +921,10 @@ export interface Redirect {
   from: string;
   to?: {
     type?: ('reference' | 'custom') | null;
-    reference?:
-      | ({
-          relationTo: 'pages';
-          value: string | Page;
-        } | null)
-      | ({
-          relationTo: 'posts';
-          value: string | Post;
-        } | null);
+    reference?: {
+      relationTo: 'pages';
+      value: string | Page;
+    } | null;
     url?: string | null;
   };
   updatedAt: string;
@@ -582,34 +949,6 @@ export interface FormSubmission {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "search".
- */
-export interface Search {
-  id: string;
-  title?: string | null;
-  priority?: number | null;
-  doc: {
-    relationTo: 'posts';
-    value: string | Post;
-  };
-  slug?: string | null;
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    image?: (string | null) | Media;
-  };
-  categories?:
-    | {
-        relationTo?: string | null;
-        id?: string | null;
-        title?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -620,8 +959,8 @@ export interface PayloadLockedDocument {
         value: string | Page;
       } | null)
     | ({
-        relationTo: 'posts';
-        value: string | Post;
+        relationTo: 'services';
+        value: string | Service;
       } | null)
     | ({
         relationTo: 'media';
@@ -646,10 +985,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'form-submissions';
         value: string | FormSubmission;
-      } | null)
-    | ({
-        relationTo: 'search';
-        value: string | Search;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -740,42 +1075,6 @@ export interface Footer {
     | null;
   updatedAt?: string | null;
   createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "BannerBlock".
- */
-export interface BannerBlock {
-  style: 'info' | 'warning' | 'error' | 'success';
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'banner';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CodeBlock".
- */
-export interface CodeBlock {
-  language?: ('typescript' | 'javascript' | 'css') | null;
-  code: string;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'code';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

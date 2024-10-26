@@ -36,6 +36,9 @@
       "@/*": [
         "./src/*"
       ],
+      "@components/*": [
+        "./src/components/*"
+      ]
     },
     "types": ["node"],
     "typeRoots": ["./node_modules/@types"]

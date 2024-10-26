@@ -15,10 +15,13 @@ import { MetaDescriptionComponent as MetaDescriptionComponent_13 } from '@payloa
 import { PreviewComponent as PreviewComponent_14 } from '@payloadcms/plugin-seo/client'
 import { SlugComponent as SlugComponent_15 } from '@/fields/slug/SlugComponent'
 import { HorizontalRuleFeatureClient as HorizontalRuleFeatureClient_16 } from '@payloadcms/richtext-lexical/client'
-import { BlocksFeatureClient as BlocksFeatureClient_17 } from '@payloadcms/richtext-lexical/client'
-import { LinkToDoc as LinkToDoc_18 } from '@payloadcms/plugin-search/client'
-import { default as default_19 } from '@/components/BeforeDashboard'
-import { default as default_20 } from '@/components/BeforeLogin'
+import { OptionLabel as OptionLabel_17 } from '@/collections/Products/ui/RowLabels/OptionLabel'
+import { KeyLabel as KeyLabel_18 } from '@/collections/Products/ui/RowLabels/KeyLabel'
+import { VariantSelect as VariantSelect_19 } from '@/collections/Products/ui/VariantSelect'
+import { StripeProductSelect as StripeProductSelect_20 } from '@/collections/Products/ui/StripeProductSelect'
+import { VariantLabel as VariantLabel_21 } from '@/collections/Products/ui/RowLabels/VariantLabel'
+import { default as default_22 } from '@/components/BeforeDashboard'
+import { default as default_23 } from '@/components/BeforeLogin'
 
 export const importMap = {
   "@payloadcms/richtext-lexical/client#RichTextCell": RichTextCell_0,
@@ -38,8 +41,11 @@ export const importMap = {
   "@payloadcms/plugin-seo/client#PreviewComponent": PreviewComponent_14,
   "@/fields/slug/SlugComponent#SlugComponent": SlugComponent_15,
   "@payloadcms/richtext-lexical/client#HorizontalRuleFeatureClient": HorizontalRuleFeatureClient_16,
-  "@payloadcms/richtext-lexical/client#BlocksFeatureClient": BlocksFeatureClient_17,
-  "@payloadcms/plugin-search/client#LinkToDoc": LinkToDoc_18,
-  "@/components/BeforeDashboard#default": default_19,
-  "@/components/BeforeLogin#default": default_20
+  "@/collections/Products/ui/RowLabels/OptionLabel#OptionLabel": OptionLabel_17,
+  "@/collections/Products/ui/RowLabels/KeyLabel#KeyLabel": KeyLabel_18,
+  "@/collections/Products/ui/VariantSelect#VariantSelect": VariantSelect_19,
+  "@/collections/Products/ui/StripeProductSelect#StripeProductSelect": StripeProductSelect_20,
+  "@/collections/Products/ui/RowLabels/VariantLabel#VariantLabel": VariantLabel_21,
+  "@/components/BeforeDashboard#default": default_22,
+  "@/components/BeforeLogin#default": default_23
 }
