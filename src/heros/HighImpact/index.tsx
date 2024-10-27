@@ -1,13 +1,17 @@
 "use client";
 import { useHeaderTheme } from "@/providers/HeaderTheme";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
-import type { Page } from "@/payload-types";
+import type { City, Page } from "@/payload-types";
 
 import { CMSLink } from "@/components/Link";
 import { Media } from "@/components/Media";
 import RichText from "@/components/RichText";
 import { SelectLocation } from "@/components/SelectLocation";
+
+import { getPayloadHMR } from "@payloadcms/next/utilities";
+import config from "@payload-config";
+import { CollectionAfterChangeHook } from "payload";
 
 export const HighImpactHero: React.FC<Page["hero"]> = ({
   links,
@@ -15,20 +19,44 @@ export const HighImpactHero: React.FC<Page["hero"]> = ({
   richText,
 }) => {
   const { setHeaderTheme } = useHeaderTheme();
+  const [cities, setCities] = useState<City[]>([]);
+  // const destinations = [
+  //   "Lagos, Nigeria",
+  //   "Cape Town, South Africa",
+  //   "Marrakech, Morocco",
+  //   "Victoria Falls, Zambia/Zimbabwe",
+  //   "Serengeti National Park, Tanzania",
+  //   "Cairo, Egypt",
+  //   "Zanzibar, Tanzania",
+  // ];
 
-  const destinations = [
-    "Lagos, Nigeria",
-    "Cape Town, South Africa",
-    "Marrakech, Morocco",
-    "Victoria Falls, Zambia/Zimbabwe",
-    "Serengeti National Park, Tanzania",
-    "Cairo, Egypt",
-    "Zanzibar, Tanzania",
-  ];
+  // const afterChangeHook: CollectionAfterChangeHook = async ({
+  //   req: { payload },
+  // }) => {
+  //   const destinations = await payload.find({
+  //     collection: "cities",
+  //   });
+  //   const cityNames = destinations.docs.map(
+  //     (city: City) => city["display name"]
+  //   );
+  //   setCityNames(cityNames);
+  // };
 
   useEffect(() => {
     setHeaderTheme("dark");
-  });
+
+    const fetchCityNames = async () => {
+      try {
+        const response = await fetch("/api/cities"); // Assuming you have an API route for this
+        const cities = await response.json();
+        setCities(cities.docs);
+      } catch (error) {
+        console.error("Failed to fetch city names:", error);
+      }
+    };
+
+    fetchCityNames();
+  }, []);
 
   return (
     <div
@@ -44,7 +72,7 @@ export const HighImpactHero: React.FC<Page["hero"]> = ({
               enableGutter={false}
             />
           )}
-          <SelectLocation locations={destinations} />
+          <SelectLocation locations={cities} />
           {Array.isArray(links) && links.length > 0 && (
             <ul className="flex gap-4">
               {links.map(({ link }, i) => {

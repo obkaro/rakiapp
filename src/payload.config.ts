@@ -24,6 +24,7 @@ import { fileURLToPath } from "url";
 import Categories from "./collections/Categories";
 import { Media } from "./collections/Media";
 import { Pages } from "./collections/Pages";
+import Cities from "./collections/Cities";
 // import { Posts } from "./collections/Posts";
 import { Services } from "./collections/Services";
 import Users from "./collections/Users";
@@ -122,7 +123,7 @@ export default buildConfig({
   db: mongooseAdapter({
     url: process.env.DATABASE_URI || "",
   }),
-  collections: [Pages, Services, Media, Categories, Users],
+  collections: [Pages, Services, Media, Cities, Categories, Users],
   cors: [process.env.PAYLOAD_PUBLIC_SERVER_URL || ""].filter(Boolean),
   csrf: [process.env.PAYLOAD_PUBLIC_SERVER_URL || ""].filter(Boolean),
   endpoints: [
@@ -137,7 +138,7 @@ export default buildConfig({
   globals: [Header, Footer],
   plugins: [
     redirectsPlugin({
-      collections: ["pages"],
+      collections: ["pages", "services"],
       overrides: {
         // @ts-expect-error
         fields: ({ defaultFields }) => {

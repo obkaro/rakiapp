@@ -9,6 +9,7 @@ import React from "react";
 import RichText from "@/components/RichText";
 
 import { CollectionArchive } from "@/components/CollectionArchive";
+import { City } from "@/payload-types";
 
 export const ArchiveBlock: React.FC<
   ArchiveBlockProps & {
@@ -22,6 +23,7 @@ export const ArchiveBlock: React.FC<
     limit: limitFromProps,
     populateBy,
     selectedDocs,
+    locations, // Add this line
   } = props;
 
   const limit = limitFromProps || 3;
@@ -36,15 +38,29 @@ export const ArchiveBlock: React.FC<
       else return category;
     });
 
+    const flattenedLocations = locations?.map((location) => {
+      if (typeof location === "object") return location.id;
+      else return location;
+    });
+
     const fetchedServices = await payload.find({
       collection: "services",
       depth: 1,
       limit,
-      ...(flattenedCategories && flattenedCategories.length > 0
+      // ...(flattenedCategories && flattenedCategories.length > 0
+      //   ? {
+      //       where: {
+      //         categories: {
+      //           in: flattenedCategories,
+      //         },
+      //       },
+      //     }
+      //   : {}),
+      ...(flattenedLocations && flattenedLocations.length > 0
         ? {
             where: {
-              categories: {
-                in: flattenedCategories,
+              city: {
+                in: flattenedLocations,
               },
             },
           }
@@ -66,7 +82,6 @@ export const ArchiveBlock: React.FC<
     <div className="my-16" id={`block-${id}`}>
       {introContent && (
         <div className="container mb-16">
-          <h2 className="text-2xl font-bold">ahdahsdjfashdbfkja</h2>
           <RichText
             className="ml-0 max-w-[48rem]"
             content={introContent}

@@ -14,6 +14,7 @@ export interface Config {
     pages: Page;
     services: Service;
     media: Media;
+    cities: City;
     categories: Category;
     users: User;
     redirects: Redirect;
@@ -591,6 +592,7 @@ export interface ArchiveBlock {
   populateBy?: ('collection' | 'selection') | null;
   relationTo?: 'services' | null;
   categories?: (string | Category)[] | null;
+  locations?: (string | City)[] | null;
   limit?: number | null;
   selectedDocs?:
     | {
@@ -623,12 +625,27 @@ export interface Category {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cities".
+ */
+export interface City {
+  id: string;
+  'city name': string;
+  country: string;
+  'display name': string;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "services".
  */
 export interface Service {
   id: string;
   title: string;
   summary: string;
+  city: (string | City)[];
   listedOn?: string | null;
   description?: {
     root: {
@@ -877,10 +894,15 @@ export interface Redirect {
   from: string;
   to?: {
     type?: ('reference' | 'custom') | null;
-    reference?: {
-      relationTo: 'pages';
-      value: string | Page;
-    } | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: string | Page;
+        } | null)
+      | ({
+          relationTo: 'services';
+          value: string | Service;
+        } | null);
     url?: string | null;
   };
   updatedAt: string;
@@ -921,6 +943,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: string | Media;
+      } | null)
+    | ({
+        relationTo: 'cities';
+        value: string | City;
       } | null)
     | ({
         relationTo: 'categories';

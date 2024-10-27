@@ -63,6 +63,18 @@ export const Services: CollectionConfig = {
       required: true,
     },
     {
+      name: "city",
+      type: "relationship",
+      relationTo: "cities",
+      hasMany: true,
+      admin: {
+        position: "sidebar",
+        sortOptions: "city name",
+        description: "Select the city where this service is located",
+      },
+      required: true,
+    },
+    {
       name: "listedOn",
       type: "date",
       admin: {

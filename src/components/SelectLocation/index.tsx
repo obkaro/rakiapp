@@ -10,9 +10,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { City } from "@/payload-types";
 
 interface SelectLocationProps {
-  locations: string[];
+  locations: City[];
 }
 
 export function SelectLocation({ locations }: SelectLocationProps) {
@@ -27,7 +28,7 @@ export function SelectLocation({ locations }: SelectLocationProps) {
 
   const handleSearch = () => {
     if (selectedLocation) {
-      router.push(`/services`);
+      router.push(`/services/${selectedLocation}`);
     }
   };
 
@@ -40,8 +41,8 @@ export function SelectLocation({ locations }: SelectLocationProps) {
         <SelectContent>
           <SelectGroup>
             {locations.map((location) => (
-              <SelectItem key={location} value={location}>
-                {location}
+              <SelectItem key={location.id} value={location.slug ?? ""}>
+                {location["display name"]}
               </SelectItem>
             ))}
           </SelectGroup>
