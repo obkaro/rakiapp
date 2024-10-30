@@ -5,8 +5,10 @@ import {
   FixedToolbarFeature,
   HeadingFeature,
   HorizontalRuleFeature,
+  HTMLConverterFeature,
   InlineToolbarFeature,
   lexicalEditor,
+  lexicalHTML,
 } from "@payloadcms/richtext-lexical";
 
 // import type { ServiceVariant } from "./ui/types";
@@ -53,7 +55,6 @@ export const Services: CollectionConfig = {
   fields: [
     {
       name: "title",
-
       type: "text",
       required: true,
     },
@@ -112,12 +113,14 @@ export const Services: CollectionConfig = {
                     FixedToolbarFeature(),
                     InlineToolbarFeature(),
                     HorizontalRuleFeature(),
+                    HTMLConverterFeature(),
                   ];
                 },
               }),
               label: false,
               required: false,
             },
+            lexicalHTML("description", { name: "description_html" }),
             {
               name: "gallery",
               type: "array",
@@ -411,6 +414,16 @@ export const Services: CollectionConfig = {
         readOnly: true,
       },
       label: "Skip Sync",
+    },
+    {
+      name: "vendor",
+      type: "relationship",
+      relationTo: "users",
+      hasMany: false,
+      admin: {
+        readOnly: false,
+        position: "sidebar",
+      },
     },
   ],
   //   hooks: {

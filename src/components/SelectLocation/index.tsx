@@ -28,7 +28,7 @@ export function SelectLocation({ locations }: SelectLocationProps) {
 
   const handleSearch = () => {
     if (selectedLocation) {
-      router.push(`/services/${selectedLocation}`);
+      router.push(`/find-services/${selectedLocation}`);
     }
   };
 
