@@ -13,10 +13,9 @@ import { MetaTitleComponent as MetaTitleComponent_11 } from '@payloadcms/plugin-
 import { MetaImageComponent as MetaImageComponent_12 } from '@payloadcms/plugin-seo/client'
 import { MetaDescriptionComponent as MetaDescriptionComponent_13 } from '@payloadcms/plugin-seo/client'
 import { PreviewComponent as PreviewComponent_14 } from '@payloadcms/plugin-seo/client'
-import { SlugComponent as SlugComponent_15 } from '@/fields/slug/SlugComponent'
+import { SlugComponent as SlugComponent_15 } from '@/payload/fields/slug/SlugComponent'
 import { HorizontalRuleFeatureClient as HorizontalRuleFeatureClient_16 } from '@payloadcms/richtext-lexical/client'
-import { default as default_17 } from '@/components/BeforeDashboard'
-import { default as default_18 } from '@/components/BeforeLogin'
+import { default as default_17 } from '@/components/BeforeLogin'
 
 export const importMap = {
   "@payloadcms/richtext-lexical/client#RichTextCell": RichTextCell_0,
@@ -36,6 +35,5 @@ export const importMap = {
   "@payloadcms/plugin-seo/client#PreviewComponent": PreviewComponent_14,
   "@/fields/slug/SlugComponent#SlugComponent": SlugComponent_15,
   "@payloadcms/richtext-lexical/client#HorizontalRuleFeatureClient": HorizontalRuleFeatureClient_16,
-  "@/components/BeforeDashboard#default": default_17,
-  "@/components/BeforeLogin#default": default_18
+  "@/components/BeforeLogin#default": default_17
 }

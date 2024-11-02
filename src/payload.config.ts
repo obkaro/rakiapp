@@ -7,6 +7,7 @@ import { nestedDocsPlugin } from "@payloadcms/plugin-nested-docs";
 import { redirectsPlugin } from "@payloadcms/plugin-redirects";
 import { seoPlugin } from "@payloadcms/plugin-seo";
 import { searchPlugin } from "@payloadcms/plugin-search";
+import { uploadthingStorage } from "@payloadcms/storage-uploadthing";
 import {
   BoldFeature,
   FixedToolbarFeature,
@@ -21,22 +22,22 @@ import path from "path";
 import { buildConfig } from "payload";
 import { fileURLToPath } from "url";
 
-import Categories from "./collections/Categories";
-import { Media } from "./collections/Media";
-import { Pages } from "./collections/Pages";
-import Cities from "./collections/Cities";
+import Categories from "@/payload/collections/Categories";
+import { Media } from "@/payload/collections/Media";
+import { Pages } from "@/payload/collections/Pages";
+import Cities from "@/payload/collections/Cities";
 // import { Posts } from "./collections/Posts";
-import { Services } from "./collections/Services";
-import Users from "./collections/Users";
-import { seedHandler } from "./endpoints/seedHandler";
-import { Footer } from "./Footer/config";
-import { Header } from "./Header/config";
-import { revalidateRedirects } from "./hooks/revalidateRedirects";
+import { Services } from "@/payload/collections/Services";
+import Users from "@/payload/collections/Users";
+// import { seedHandler } from "@/payload/endpoints/seedHandler";
+import { Footer } from "@components/Footer/config";
+import { Header } from "@components/Header/config";
+import { revalidateRedirects } from "./lib/hooks/revalidateRedirects";
 import { GenerateTitle, GenerateURL } from "@payloadcms/plugin-seo/types";
 import { Page, Service } from "src/payload-types";
 
-import { searchFields } from "@/search/fieldOverrides";
-import { beforeSyncWithSearch } from "@/search/beforeSync";
+import { searchFields } from "@/payload/features/search/fieldOverrides";
+import { beforeSyncWithSearch } from "@/payload/features/search/beforeSync";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -59,7 +60,7 @@ export default buildConfig({
       beforeLogin: ["@/components/BeforeLogin"],
       // The `BeforeDashboard` component renders the 'welcome' block that you see after logging into your admin panel.
       // Feel free to delete this at any time. Simply remove the line below and the import `BeforeDashboard` statement on line 15.
-      beforeDashboard: ["@/components/BeforeDashboard"],
+      // beforeDashboard: ["@/components/BeforeDashboard"],
     },
     importMap: {
       baseDir: path.resolve(dirname),
@@ -129,11 +130,11 @@ export default buildConfig({
   endpoints: [
     // The seed endpoint is used to populate the database with some example data
     // You should delete this endpoint before deploying your site to production
-    {
-      handler: seedHandler,
-      method: "get",
-      path: "/seed",
-    },
+    // {
+    //   handler: seedHandler,
+    //   method: "get",
+    //   path: "/seed",
+    // },
   ],
   globals: [Header, Footer],
   plugins: [
@@ -204,7 +205,16 @@ export default buildConfig({
     //     },
     //   },
     // }),
-    payloadCloudPlugin(), // storage-adapter-placeholder
+    // payloadCloudPlugin(),
+    // storage-adapter-placeholder
+    uploadthingStorage({
+      collections: {
+        media: true,
+      },
+      options: {
+        apiKey: process.env.UPLOADTHING_SECRET,
+      },
+    }),
   ],
   secret: process.env.PAYLOAD_SECRET!,
   sharp,
