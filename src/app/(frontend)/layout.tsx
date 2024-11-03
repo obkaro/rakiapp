@@ -13,6 +13,7 @@ import { Providers } from "@/lib/providers";
 import { InitTheme } from "@/lib/providers/Theme/InitTheme";
 import { mergeOpenGraph } from "@/lib/utilities/mergeOpenGraph";
 import { draftMode } from "next/headers";
+import { Toaster } from "sonner";
 
 import "./globals.css";
 
@@ -46,6 +47,7 @@ export default async function RootLayout({
           <Header />
           <main className="flex-grow">{children}</main>
           <Footer />
+          <Toaster />
         </Providers>
       </body>
     </html>

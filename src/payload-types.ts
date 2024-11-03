@@ -708,7 +708,9 @@ export interface Service {
  */
 export interface User {
   id: string;
-  name?: string | null;
+  displayName?: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
   image?: (string | null) | Media;
   isVendor?: boolean | null;
   isTraveler?: boolean | null;
@@ -1352,7 +1354,9 @@ export interface CategoriesSelect<T extends boolean = true> {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
-  name?: T;
+  displayName?: T;
+  firstName?: T;
+  lastName?: T;
   image?: T;
   isVendor?: T;
   isTraveler?: T;
