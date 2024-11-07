@@ -1,6 +1,8 @@
 // storage-adapter-import-placeholder
 import { mongooseAdapter } from "@payloadcms/db-mongodb";
 
+import { resendAdapter } from "@payloadcms/email-resend";
+
 import { payloadCloudPlugin } from "@payloadcms/plugin-cloud";
 import { formBuilderPlugin } from "@payloadcms/plugin-form-builder";
 import { nestedDocsPlugin } from "@payloadcms/plugin-nested-docs";
@@ -15,6 +17,9 @@ import {
   ItalicFeature,
   LinkFeature,
   lexicalEditor,
+  AlignFeature,
+  IndentFeature,
+  BlockquoteFeature,
 } from "@payloadcms/richtext-lexical";
 import sharp from "sharp"; // editor-import
 import { UnderlineFeature } from "@payloadcms/richtext-lexical";
@@ -53,6 +58,11 @@ const generateURL: GenerateURL<Page> = ({ doc }) => {
 };
 
 export default buildConfig({
+  email: resendAdapter({
+    apiKey: process.env.RESEND_API_KEY || "",
+    defaultFromAddress: "hello@rakiapp.com",
+    defaultFromName: "Raki",
+  }),
   admin: {
     components: {
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
@@ -96,6 +106,9 @@ export default buildConfig({
         UnderlineFeature(),
         BoldFeature(),
         ItalicFeature(),
+        AlignFeature(),
+        IndentFeature(),
+        BlockquoteFeature(),
         LinkFeature({
           enabledCollections: ["pages"],
           fields: ({ defaultFields }) => {
