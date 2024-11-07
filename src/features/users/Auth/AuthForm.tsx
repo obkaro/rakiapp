@@ -13,6 +13,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
+import UserTypeSelector from "./user-type-selector";
+
 import {
   ArrowRight,
   ArrowLeft,
@@ -81,8 +83,9 @@ export default function AuthFormComponent({
   const [error, setError] = useState<null | string>(null);
   const [createdFirstName, setCreatedFirstName] = useState("");
 
-  const [isEmailLoading, setIsEmailLoading] = useState(false);
-
+  // const [isEmailLoading, setIsEmailLoading] = useState(false);
+  const [userType, setUserType] = useState<"traveler" | "vendor">("traveler");
+  const [isUserTypeLoading, setIsUserTypeLoading] = useState(false);
   // Update form initialization
   const form = useForm<z.infer<typeof loginSchema | typeof registerSchema>>({
     resolver: zodResolver(isExistingUser ? loginSchema : registerSchema),
@@ -94,18 +97,23 @@ export default function AuthFormComponent({
     },
   });
 
-  const handleEmailSubmit = async (e: React.FormEvent) => {
+  // const handleEmailSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   setIsEmailLoading(true);
+  //   try {
+  //     const exists = await checkEmailExists(email);
+  //     setIsExistingUser(exists.exists ?? false);
+  //     setStep(2);
+  //   } catch (error) {
+  //     setError("Error checking email");
+  //   } finally {
+  //     setIsEmailLoading(false);
+  //   }
+  // };
+
+  const handleUserTypeSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsEmailLoading(true);
-    try {
-      const exists = await checkEmailExists(email);
-      setIsExistingUser(exists.exists ?? false);
-      setStep(2);
-    } catch (error) {
-      setError("Error checking email");
-    } finally {
-      setIsEmailLoading(false);
-    }
+    setStep(2);
   };
 
   const onSubmit = useCallback(
@@ -160,14 +168,14 @@ export default function AuthFormComponent({
         exit={{ opacity: 0, y: -20 }}
         transition={{ duration: 0.2 }}
       >
-        <Card className="border-none shadow-none">
+        <Card className="border-none shadow-none w-full px-2 sm:px-4">
           <CardHeader>
-            <CardTitle className="text-2xl font-bold text-center">
-              Welcome to Raki
+            <CardTitle className="text-2xl font-bold text-center ">
+              Welcome
             </CardTitle>
             <CardDescription className="text-center">
               {step === 1
-                ? "Let's get started with your email"
+                ? "How will you use Raki today?"
                 : step === 2
                 ? isExistingUser
                   ? "Welcome back!"
@@ -176,34 +184,29 @@ export default function AuthFormComponent({
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {error && <p className="text-red-500 mb-4">{error}</p>}
+            {/* {error && <p className="text-red-500 mb-4">{error}</p>} */}
             {step === 1 && (
-              <form onSubmit={handleEmailSubmit}>
-                <div className="grid w-full items-center gap-4">
-                  <div className="flex flex-col space-y-1.5">
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      placeholder="Enter your email"
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                    />
+              <form onSubmit={handleUserTypeSubmit}>
+                <div className="space-y-16 max-w-2xl mx-auto my-8">
+                  <UserTypeSelector
+                    userType={userType}
+                    onUserTypeChange={setUserType}
+                  />
+                  <div className="mt-6">
+                    <Button
+                      className="w-full"
+                      type="submit"
+                      disabled={isUserTypeLoading}
+                    >
+                      {isUserTypeLoading ? (
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      ) : (
+                        <ArrowRight className="mr-2 h-4 w-4" />
+                      )}
+                      Continue
+                    </Button>
                   </div>
                 </div>
-                <Button
-                  className="w-full mt-6"
-                  type="submit"
-                  disabled={isEmailLoading}
-                >
-                  {isEmailLoading ? (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  ) : (
-                    <ArrowRight className="mr-2 h-4 w-4" />
-                  )}
-                  Continue
-                </Button>
               </form>
             )}
             {step === 2 && (

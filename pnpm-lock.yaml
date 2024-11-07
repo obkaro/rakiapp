@@ -1096,11 +1096,11 @@ packages:
     peerDependencies:
       payload: 3.0.0-beta.123
 
-  '@payloadcms/email-nodemailer@3.0.0-beta.124':
-    resolution: {integrity: sha512-twdD77VaPbT0bL7vr1CAfkMJicTHQjqdnWeHZs1uQjaeS6FNNahVvHEas2iMcFoN0fn9FmNB+KGykKDNcN28iA==}
+  '@payloadcms/email-nodemailer@3.0.0-beta.126':
+    resolution: {integrity: sha512-r3s4u/3BpHMnaNf4a6f1zqqac2V4CxIcdEYGSscxWXHeZ1DD3mxHbJ9wqKyCcnaCxYRv0K6PvG/L8/AQigVP0A==}
     engines: {node: ^18.20.2 || >=20.9.0}
     peerDependencies:
-      payload: 3.0.0-beta.124
+      payload: 3.0.0-beta.126
 
   '@payloadcms/email-resend@3.0.0-beta.124':
     resolution: {integrity: sha512-FzOTwnHh7P6quZCtTvr3bsykGpFCB8ErNTGIupoYxloKyfHN0FZ5kN7fYzPyc6dzXYrgCOzhjXmtuXrPG0XfcQ==}
@@ -6228,7 +6228,7 @@ snapshots:
       - aws-crt
       - supports-color
 
-  '@payloadcms/email-nodemailer@3.0.0-beta.124(payload@3.0.0-beta.124(graphql@16.9.0)(monaco-editor@0.52.0)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)(typescript@5.6.2))':
+  '@payloadcms/email-nodemailer@3.0.0-beta.126(payload@3.0.0-beta.124(graphql@16.9.0)(monaco-editor@0.52.0)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)(typescript@5.6.2))':
     dependencies:
       nodemailer: 6.9.10
       payload: 3.0.0-beta.124(graphql@16.9.0)(monaco-editor@0.52.0)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)(typescript@5.6.2)
@@ -6363,7 +6363,7 @@ snapshots:
       '@aws-sdk/client-s3': 3.685.0
       '@aws-sdk/credential-providers': 3.685.0(@aws-sdk/client-sso-oidc@3.682.0(@aws-sdk/client-sts@3.682.0))
       '@aws-sdk/lib-storage': 3.685.0(@aws-sdk/client-s3@3.685.0)
-      '@payloadcms/email-nodemailer': 3.0.0-beta.124(payload@3.0.0-beta.124(graphql@16.9.0)(monaco-editor@0.52.0)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)(typescript@5.6.2))
+      '@payloadcms/email-nodemailer': 3.0.0-beta.126(payload@3.0.0-beta.124(graphql@16.9.0)(monaco-editor@0.52.0)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)(typescript@5.6.2))
       amazon-cognito-identity-js: 6.3.12
       nodemailer: 6.9.10
       payload: 3.0.0-beta.124(graphql@16.9.0)(monaco-editor@0.52.0)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)(typescript@5.6.2)

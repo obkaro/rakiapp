@@ -27,7 +27,7 @@ export default function AuthModal() {
         <Button aria-label="Open authentication dialog">Sign In</Button>
       </DialogTrigger>
       <DialogContent
-        className="sm:max-w-[425px] p-0"
+        className="sm:max-w-lg p-0"
         aria-describedby="auth-dialog-description"
       >
         <DialogHeader className="sr-only">
