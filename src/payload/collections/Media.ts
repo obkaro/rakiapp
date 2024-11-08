@@ -8,8 +8,8 @@ import {
 import path from "path";
 import { fileURLToPath } from "url";
 
-import { anyone } from "@/lib/access/anyone";
-import { authenticated } from "@/lib/access/authenticated";
+import { anyone } from "@/payload/access/anyone";
+import { authenticated } from "@/payload/access/authenticated";
 
 // import { uploadthingStorage } from "@payloadcms/storage-uploadthing";
 

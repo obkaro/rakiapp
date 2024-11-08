@@ -1,8 +1,8 @@
 import type { CollectionConfig } from "payload";
 
 import { Banner } from "@/payload/blocks/Banner/config";
-import { authenticated } from "@/lib/access/authenticated";
-import { authenticatedOrPublished } from "@/lib/access/authenticatedOrPublished";
+import { authenticated } from "@/payload/access/authenticated";
+import { authenticatedOrPublished } from "@/payload/access/authenticatedOrPublished";
 import { Archive } from "@/payload/blocks/ArchiveBlock/config";
 import { CallToAction } from "@/payload/blocks/CallToAction/config";
 import { Content } from "@/payload/blocks/Content/config";
@@ -21,13 +21,16 @@ import {
   OverviewField,
   PreviewField,
 } from "@payloadcms/plugin-seo/fields";
+
+import { isAdmin } from "@/payload/access/isAdmin";
+
 export const Pages: CollectionConfig = {
   slug: "pages",
   access: {
-    create: authenticated,
-    delete: authenticated,
+    create: isAdmin,
+    delete: isAdmin,
     read: authenticatedOrPublished,
-    update: authenticated,
+    update: isAdmin,
   },
   admin: {
     defaultColumns: ["title", "slug", "updatedAt"],
@@ -50,6 +53,9 @@ export const Pages: CollectionConfig = {
       return `${process.env.NEXT_PUBLIC_SERVER_URL}${path}`;
     },
     useAsTitle: "title",
+    hidden: ({ user }) => {
+      return user?.isAdmin ? false : true;
+    },
   },
   fields: [
     {

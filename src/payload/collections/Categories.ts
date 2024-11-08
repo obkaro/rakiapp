@@ -1,18 +1,22 @@
 import type { CollectionConfig } from "payload";
 
-import { anyone } from "@/lib/access/anyone";
-import { authenticated } from "@/lib/access/authenticated";
+import { anyone } from "@/payload/access/anyone";
+import { authenticated } from "@/payload/access/authenticated";
+import { isAdmin } from "../access/isAdmin";
 
 const Categories: CollectionConfig = {
   slug: "categories",
   access: {
-    create: authenticated,
-    delete: authenticated,
+    create: isAdmin,
+    delete: isAdmin,
     read: anyone,
-    update: authenticated,
+    update: isAdmin,
   },
   admin: {
     useAsTitle: "title",
+    hidden: ({ user }) => {
+      return user?.isAdmin ? false : true;
+    },
   },
   fields: [
     {

@@ -17,6 +17,9 @@ export interface Config {
     cities: City;
     categories: Category;
     users: User;
+    emails: Email;
+    vendors: Vendor;
+    travelers: Traveler;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -24,6 +27,7 @@ export interface Config {
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
+  collectionsJoins: {};
   collectionsSelect: {
     pages: PagesSelect<false> | PagesSelect<true>;
     services: ServicesSelect<false> | ServicesSelect<true>;
@@ -31,6 +35,9 @@ export interface Config {
     cities: CitiesSelect<false> | CitiesSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    emails: EmailsSelect<false> | EmailsSelect<true>;
+    vendors: VendorsSelect<false> | VendorsSelect<true>;
+    travelers: TravelersSelect<false> | TravelersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -722,6 +729,8 @@ export interface User {
   resetPasswordExpiration?: string | null;
   salt?: string | null;
   hash?: string | null;
+  _verified?: boolean | null;
+  _verificationToken?: string | null;
   loginAttempts?: number | null;
   lockUntil?: string | null;
   password?: string | null;
@@ -943,6 +952,64 @@ export interface BannerBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "emails".
+ */
+export interface Email {
+  id: string;
+  title: string;
+  description?: string | null;
+  body: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  publishedAt?: string | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "vendors".
+ */
+export interface Vendor {
+  id: string;
+  user?: (string | null) | User;
+  status?: ('pending' | 'approved' | 'blocked' | 'rejected' | 'inactive') | null;
+  displayName?: string | null;
+  website?: string | null;
+  tagline?: string | null;
+  description?: string | null;
+  logo?: (string | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "travelers".
+ */
+export interface Traveler {
+  id: string;
+  user?: (string | null) | User;
+  status?: ('pending' | 'approved') | null;
+  displayName?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1011,6 +1078,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: string | User;
+      } | null)
+    | ({
+        relationTo: 'emails';
+        value: string | Email;
+      } | null)
+    | ({
+        relationTo: 'vendors';
+        value: string | Vendor;
+      } | null)
+    | ({
+        relationTo: 'travelers';
+        value: string | Traveler;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1368,8 +1447,51 @@ export interface UsersSelect<T extends boolean = true> {
   resetPasswordExpiration?: T;
   salt?: T;
   hash?: T;
+  _verified?: T;
+  _verificationToken?: T;
   loginAttempts?: T;
   lockUntil?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "emails_select".
+ */
+export interface EmailsSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  body?: T;
+  publishedAt?: T;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "vendors_select".
+ */
+export interface VendorsSelect<T extends boolean = true> {
+  user?: T;
+  status?: T;
+  displayName?: T;
+  website?: T;
+  tagline?: T;
+  description?: T;
+  logo?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "travelers_select".
+ */
+export interface TravelersSelect<T extends boolean = true> {
+  user?: T;
+  status?: T;
+  displayName?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

@@ -50,20 +50,21 @@ type FormData = {
 
 // Add validation schema
 const loginSchema = z.object({
+  email: z.string().email("Invalid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
 });
 
-const registerSchema = z
-  .object({
-    firstName: z.string().min(2, "First name must be at least 2 characters"),
-    lastName: z.string().min(2, "Last name must be at least 2 characters"),
-    password: z.string().min(8, "Password must be at least 8 characters"),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ["confirmPassword"], // path of error
-  });
+const registerSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  firstName: z.string().min(2, "First name must be at least 2 characters"),
+  lastName: z.string().min(2, "Last name must be at least 2 characters"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+  // confirmPassword: z.string(),
+});
+// .refine((data) => data.password === data.confirmPassword, {
+//   message: "Passwords don't match",
+//   path: ["confirmPassword"], // path of error
+// });
 
 export default function AuthFormComponent({
   onClose,
@@ -78,7 +79,7 @@ export default function AuthFormComponent({
 
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
-  const [isExistingUser, setIsExistingUser] = useState(true);
+  const [isExistingUser, setIsExistingUser] = useState(false);
   const [receiveUpdates, setReceiveUpdates] = useState(true);
   const [error, setError] = useState<null | string>(null);
   const [createdFirstName, setCreatedFirstName] = useState("");
@@ -90,10 +91,11 @@ export default function AuthFormComponent({
   const form = useForm<z.infer<typeof loginSchema | typeof registerSchema>>({
     resolver: zodResolver(isExistingUser ? loginSchema : registerSchema),
     defaultValues: {
+      email: "",
       firstName: "",
       lastName: "",
       password: "",
-      confirmPassword: "",
+      // confirmPassword: "",
     },
   });
 
@@ -111,39 +113,50 @@ export default function AuthFormComponent({
   //   }
   // };
 
-  const handleUserTypeSubmit = (e: React.FormEvent) => {
+  const handleUserTypeSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsUserTypeLoading(true);
+    setIsExistingUser(false);
+    await new Promise((resolve) => setTimeout(resolve, 800));
+    setIsUserTypeLoading(false);
     setStep(2);
   };
 
   const onSubmit = useCallback(
     async (data: FormData) => {
+      console.log("Submitting form");
       try {
         if (isExistingUser) {
           // Existing user: Sign in
-          await login({ email: email, password: data.password });
+          await login({ email: data.email, password: data.password });
           toast.success("Signed in successfully!");
           onClose();
+          if (redirect.current) {
+            router.push(redirect.current);
+          } else {
+            router.refresh();
+          }
         } else {
-          // New user: Create account
+          console.log("Creating user");
           await create({
-            email: email,
+            email: data.email,
             password: data.password,
             firstName: data.firstName ?? "",
             lastName: data.lastName ?? "",
-            isVendor: false,
-            isTraveler: true,
+            isVendor: userType === "vendor",
+            isTraveler: userType === "traveler",
           }).then(() => {
-            login({ email: email, password: data.password });
+            login({ email: data.email, password: data.password });
+            setCreatedFirstName(data.firstName || "");
           });
-          setCreatedFirstName(data.firstName || "");
           setStep(3);
         }
       } catch (_) {
         toast.error("An error occured. Please try again.");
+        console.error(_);
       }
     },
-    [login, create, onClose, isExistingUser, email]
+    [login, create, onClose, isExistingUser, router, userType]
   );
 
   const handleVerifyEmail = () => {
@@ -152,12 +165,24 @@ export default function AuthFormComponent({
 
   useEffect(() => {
     if (step === 3) {
-      const timer = setTimeout(() => {
-        onClose();
-      }, 5000);
-      return () => clearTimeout(timer);
+      if (userType === "vendor") {
+        toast.success("Vendor account created successfully!");
+        router.push("/admin");
+      } else {
+        const timer = setTimeout(() => {
+          onClose();
+          if (redirect.current) {
+            toast.success("Account created successfully!");
+            router.push(redirect.current);
+          } else {
+            toast.success("Account created successfully!");
+            router.refresh();
+          }
+        }, 10000);
+        return () => clearTimeout(timer);
+      }
     }
-  }, [step, onClose]);
+  }, [step, onClose, router, userType]);
 
   return (
     <AnimatePresence mode="wait">
@@ -171,41 +196,52 @@ export default function AuthFormComponent({
         <Card className="border-none shadow-none w-full px-2 sm:px-4">
           <CardHeader>
             <CardTitle className="text-2xl font-bold text-center ">
-              Welcome
+              {isExistingUser ? "Welcome back!" : "Welcome"}
             </CardTitle>
             <CardDescription className="text-center">
               {step === 1
                 ? "How will you use Raki today?"
                 : step === 2
                 ? isExistingUser
-                  ? "Welcome back!"
-                  : "Create your account"
-                : "Congratulations!"}
+                  ? "Sign in to your account"
+                  : userType === "traveler"
+                  ? "Create your Raki Traveler account"
+                  : "Create your Raki Vendor account"
+                : ""}
             </CardDescription>
           </CardHeader>
           <CardContent>
             {/* {error && <p className="text-red-500 mb-4">{error}</p>} */}
             {step === 1 && (
               <form onSubmit={handleUserTypeSubmit}>
-                <div className="space-y-16 max-w-2xl mx-auto my-8">
+                <div className="max-w-2xl mx-auto my-8 flex flex-col items-center">
                   <UserTypeSelector
                     userType={userType}
                     onUserTypeChange={setUserType}
                   />
-                  <div className="mt-6">
-                    <Button
-                      className="w-full"
-                      type="submit"
-                      disabled={isUserTypeLoading}
-                    >
-                      {isUserTypeLoading ? (
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      ) : (
-                        <ArrowRight className="mr-2 h-4 w-4" />
-                      )}
-                      Continue
-                    </Button>
-                  </div>
+                  <Button
+                    className="mt-12"
+                    type="submit"
+                    disabled={isUserTypeLoading}
+                  >
+                    {isUserTypeLoading ? (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    ) : (
+                      <ArrowRight className="mr-2 h-4 w-4" />
+                    )}
+                    Continue
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    className="mt-4 hover:underline hover:bg-transparent"
+                    type="button"
+                    onClick={() => {
+                      setIsExistingUser(true);
+                      setStep(2);
+                    }}
+                  >
+                    Have an account? Sign In
+                  </Button>
                 </div>
               </form>
             )}
@@ -213,7 +249,7 @@ export default function AuthFormComponent({
               <Form {...form}>
                 <form
                   onSubmit={form.handleSubmit(onSubmit)}
-                  className="space-y-4"
+                  className="space-y-4 px-2"
                 >
                   {!isExistingUser && (
                     <>
@@ -242,6 +278,23 @@ export default function AuthFormComponent({
                             <FormControl>
                               <Input
                                 placeholder="Enter your last name"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Email</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="email"
+                                placeholder="Enter your email"
                                 {...field}
                               />
                             </FormControl>
@@ -288,6 +341,25 @@ export default function AuthFormComponent({
                   {isExistingUser && (
                     <FormField
                       control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Email</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="email"
+                              placeholder="Enter your email"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  )}
+                  {isExistingUser && (
+                    <FormField
+                      control={form.control}
                       name="password"
                       render={({ field }) => (
                         <FormItem>
@@ -304,26 +376,27 @@ export default function AuthFormComponent({
                       )}
                     />
                   )}
-                  <Button
-                    className="w-full mt-6"
-                    type="submit"
-                    disabled={form.formState.isSubmitting}
-                  >
-                    {form.formState.isSubmitting ? (
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    ) : null}
-                    {isExistingUser ? "Sign In" : "Create Account"}
-                  </Button>
-
-                  <Button
-                    variant="ghost"
-                    className="w-full mt-2"
-                    onClick={() => setStep(1)}
-                    type="button"
-                  >
-                    <ArrowLeft className="mr-2 h-4 w-4" />
-                    Back
-                  </Button>
+                  <div className="flex flex-col items-center justify-center">
+                    <Button
+                      className="w-fit mt-6"
+                      type="submit"
+                      disabled={form.formState.isSubmitting}
+                    >
+                      {form.formState.isSubmitting ? (
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      ) : null}
+                      {isExistingUser ? "Sign In" : "Create Account"}
+                    </Button>
+                    <Button
+                      variant="link"
+                      className="mt-2"
+                      onClick={() => (setIsExistingUser(false), setStep(1))}
+                      type="button"
+                    >
+                      <ArrowLeft className="mr-2 h-4 w-4" />
+                      Back
+                    </Button>
+                  </div>
                 </form>
               </Form>
             )}
@@ -358,7 +431,7 @@ export default function AuthFormComponent({
                   </label>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  This window will close automatically in 5 seconds
+                  This window will close automatically in 10 seconds
                 </p>
               </div>
             )}

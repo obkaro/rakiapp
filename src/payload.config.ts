@@ -31,10 +31,13 @@ import Categories from "@/payload/collections/Categories";
 import { Media } from "@/payload/collections/Media";
 import { Pages } from "@/payload/collections/Pages";
 import Cities from "@/payload/collections/Cities";
-// import { Posts } from "./collections/Posts";
+import { Emails } from "@/payload/collections/Emails";
 import { Services } from "@/payload/collections/Services";
 import Users from "@/payload/collections/Users";
+import Vendors from "@/payload/collections/Vendors";
+import Travelers from "@/payload/collections/Travelers";
 // import { seedHandler } from "@/payload/endpoints/seedHandler";
+
 import { Footer } from "@components/Footer/config";
 import { Header } from "@components/Header/config";
 import { revalidateRedirects } from "./lib/hooks/revalidateRedirects";
@@ -58,11 +61,6 @@ const generateURL: GenerateURL<Page> = ({ doc }) => {
 };
 
 export default buildConfig({
-  email: resendAdapter({
-    apiKey: process.env.RESEND_API_KEY || "",
-    defaultFromAddress: "hello@rakiapp.com",
-    defaultFromName: "Raki",
-  }),
   admin: {
     components: {
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
@@ -72,6 +70,7 @@ export default buildConfig({
       // Feel free to delete this at any time. Simply remove the line below and the import `BeforeDashboard` statement on line 15.
       // beforeDashboard: ["@/components/BeforeDashboard"],
     },
+    avatar: "gravatar",
     importMap: {
       baseDir: path.resolve(dirname),
     },
@@ -137,7 +136,17 @@ export default buildConfig({
   db: mongooseAdapter({
     url: process.env.DATABASE_URI || "",
   }),
-  collections: [Pages, Services, Media, Cities, Categories, Users],
+  collections: [
+    Pages,
+    Services,
+    Media,
+    Cities,
+    Categories,
+    Users,
+    Emails,
+    Vendors,
+    Travelers,
+  ],
   cors: [process.env.PAYLOAD_PUBLIC_SERVER_URL || ""].filter(Boolean),
   csrf: [process.env.PAYLOAD_PUBLIC_SERVER_URL || ""].filter(Boolean),
   endpoints: [
@@ -168,6 +177,9 @@ export default buildConfig({
             }
             return field;
           });
+        },
+        admin: {
+          hidden: true,
         },
         hooks: {
           afterChange: [revalidateRedirects],
@@ -207,6 +219,9 @@ export default buildConfig({
             return field;
           });
         },
+        admin: {
+          hidden: true,
+        },
       },
     }),
     // searchPlugin({
@@ -234,4 +249,9 @@ export default buildConfig({
   typescript: {
     outputFile: path.resolve(dirname, "payload-types.ts"),
   },
+  email: resendAdapter({
+    apiKey: process.env.RESEND_API_KEY || "",
+    defaultFromAddress: "hello@mail.rakiapp.com",
+    defaultFromName: "Raki",
+  }),
 });

@@ -1,24 +1,38 @@
 import type { CollectionConfig } from "payload";
 
-import { authenticated } from "@/lib/access/authenticated";
-import { anyone } from "@/lib/access/anyone";
+import { authenticated } from "@/payload/access/authenticated";
+import { anyone } from "@/payload/access/anyone";
+import { isAdmin } from "@/payload/access/isAdmin";
+import { adminOrSelf } from "@/payload/access/adminOrSelf";
+import { isTraveler } from "@/payload/access/isTraveler";
+import { isVendor } from "@/payload/access/isVendor";
 
 import { updateDisplayName } from "./hooks/updateDisplayName";
 
 const Users: CollectionConfig = {
   slug: "users",
   access: {
-    admin: authenticated,
+    admin: ({ req: { user } }) => {
+      return user?.isAdmin ? true : user?.isVendor ? true : false;
+    },
+    unlock: ({ req: { user } }) => {
+      return user?.isAdmin ? true : user?.isVendor ? true : false;
+    },
     create: anyone,
-    delete: authenticated,
-    read: authenticated,
-    update: authenticated,
+    delete: isAdmin,
+    read: anyone,
+    update: anyone,
   },
   admin: {
     defaultColumns: ["displayName", "email"],
     useAsTitle: "displayName",
+    hidden: ({ user }) => {
+      return user?.isAdmin ? false : true;
+    },
   },
-  auth: true,
+  auth: {
+    verify: true,
+  },
   fields: [
     {
       name: "displayName",
