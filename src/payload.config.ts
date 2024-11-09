@@ -27,15 +27,16 @@ import path from "path";
 import { buildConfig } from "payload";
 import { fileURLToPath } from "url";
 
-import Categories from "@/payload/collections/Categories";
+import ServiceLines from "@/payload/collections/ServiceLines";
 import { Media } from "@/payload/collections/Media";
 import { Pages } from "@/payload/collections/Pages";
 import Cities from "@/payload/collections/Cities";
 import { Emails } from "@/payload/collections/Emails";
 import { Services } from "@/payload/collections/Services";
 import Users from "@/payload/collections/Users";
-import Vendors from "@/payload/collections/Vendors";
+import { Vendors } from "@/payload/collections/Vendors";
 import Travelers from "@/payload/collections/Travelers";
+import ServiceFeatures from "@/payload/collections/ServiceFeatures";
 // import { seedHandler } from "@/payload/endpoints/seedHandler";
 
 import { Footer } from "@components/Footer/config";
@@ -65,10 +66,24 @@ export default buildConfig({
     components: {
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
       // Feel free to delete this at any time. Simply remove the line below and the import `BeforeLogin` statement on line 15.
-      beforeLogin: ["@/components/BeforeLogin"],
+      // beforeLogin: ["@/components/BeforeLogin"],
+      graphics: {
+        Logo: {
+          path: "@/components/Logo/Logo",
+          exportName: "Logo",
+        },
+        Icon: {
+          path: "@/components/Logo/Logo",
+          exportName: "Logo",
+        },
+      },
       // The `BeforeDashboard` component renders the 'welcome' block that you see after logging into your admin panel.
       // Feel free to delete this at any time. Simply remove the line below and the import `BeforeDashboard` statement on line 15.
       // beforeDashboard: ["@/components/BeforeDashboard"],
+    },
+    meta: {
+      titleSuffix: "| Raki",
+      description: "Raki Vendor Portal",
     },
     avatar: "gravatar",
     importMap: {
@@ -141,7 +156,8 @@ export default buildConfig({
     Services,
     Media,
     Cities,
-    Categories,
+    ServiceLines,
+    ServiceFeatures,
     Users,
     Emails,
     Vendors,
@@ -187,7 +203,7 @@ export default buildConfig({
       },
     }),
     nestedDocsPlugin({
-      collections: ["categories"],
+      collections: ["service-lines"],
     }),
     seoPlugin({
       generateTitle,
@@ -196,6 +212,13 @@ export default buildConfig({
     formBuilderPlugin({
       fields: {
         payment: false,
+      },
+      formSubmissionOverrides: {
+        admin: {
+          hidden: ({ user }) => {
+            return user?.isAdmin ? false : true;
+          },
+        },
       },
       formOverrides: {
         fields: ({ defaultFields }) => {
@@ -220,7 +243,9 @@ export default buildConfig({
           });
         },
         admin: {
-          hidden: true,
+          hidden: ({ user }) => {
+            return user?.isAdmin ? false : true;
+          },
         },
       },
     }),

@@ -4,8 +4,8 @@ import { anyone } from "@/payload/access/anyone";
 import { authenticated } from "@/payload/access/authenticated";
 import { isAdmin } from "../access/isAdmin";
 
-const Categories: CollectionConfig = {
-  slug: "categories",
+const ServiceLines: CollectionConfig = {
+  slug: "service-lines",
   access: {
     create: isAdmin,
     delete: isAdmin,
@@ -24,7 +24,18 @@ const Categories: CollectionConfig = {
       type: "text",
       required: true,
     },
+    {
+      name: "features",
+      type: "relationship",
+      relationTo: "service-features",
+      hasMany: true,
+      admin: {
+        condition: (data) => {
+          return data.parent ? true : false;
+        },
+      },
+    },
   ],
 };
 
-export default Categories;
+export default ServiceLines;

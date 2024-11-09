@@ -6,6 +6,22 @@
  * and re-run `payload generate:types` to regenerate this file.
  */
 
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Location".
+ */
+export type Location = {
+  name: string;
+  addressLine1: string;
+  addressLine2?: string | null;
+  city: string;
+  state: string;
+  zipOrPostalCode?: string | null;
+  country: string;
+  phone: string;
+  id?: string | null;
+}[];
+
 export interface Config {
   auth: {
     users: UserAuthOperations;
@@ -15,7 +31,8 @@ export interface Config {
     services: Service;
     media: Media;
     cities: City;
-    categories: Category;
+    'service-lines': ServiceLine;
+    'service-features': ServiceFeature;
     users: User;
     emails: Email;
     vendors: Vendor;
@@ -33,7 +50,8 @@ export interface Config {
     services: ServicesSelect<false> | ServicesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     cities: CitiesSelect<false> | CitiesSelect<true>;
-    categories: CategoriesSelect<false> | CategoriesSelect<true>;
+    'service-lines': ServiceLinesSelect<false> | ServiceLinesSelect<true>;
+    'service-features': ServiceFeaturesSelect<false> | ServiceFeaturesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     emails: EmailsSelect<false> | EmailsSelect<true>;
     vendors: VendorsSelect<false> | VendorsSelect<true>;
@@ -621,7 +639,7 @@ export interface ArchiveBlock {
   } | null;
   populateBy?: ('collection' | 'selection') | null;
   relationTo?: 'services' | null;
-  categories?: (string | Category)[] | null;
+  serviceLines?: (string | ServiceLine)[] | null;
   locations?: (string | City)[] | null;
   limit?: number | null;
   selectedDocs?:
@@ -636,20 +654,32 @@ export interface ArchiveBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories".
+ * via the `definition` "service-lines".
  */
-export interface Category {
+export interface ServiceLine {
   id: string;
   title: string;
-  parent?: (string | null) | Category;
+  features?: (string | ServiceFeature)[] | null;
+  parent?: (string | null) | ServiceLine;
   breadcrumbs?:
     | {
-        doc?: (string | null) | Category;
+        doc?: (string | null) | ServiceLine;
         url?: string | null;
         label?: string | null;
         id?: string | null;
       }[]
     | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "service-features".
+ */
+export interface ServiceFeature {
+  id: string;
+  title: string;
+  description?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -675,9 +705,7 @@ export interface Service {
   id: string;
   title: string;
   summary: string;
-  city: (string | City)[];
-  listedOn?: string | null;
-  description?: {
+  description: {
     root: {
       type: string;
       children: {
@@ -691,20 +719,21 @@ export interface Service {
       version: number;
     };
     [k: string]: unknown;
-  } | null;
+  };
   description_html?: string | null;
-  gallery?:
-    | {
-        image: string | Media;
-        id?: string | null;
-      }[]
-    | null;
-  layout?: (CallToActionBlock | ContentBlock | MediaBlock)[] | null;
-  categories?: (string | null) | Category;
+  features?: (string | ServiceFeature)[] | null;
+  gallery: {
+    image: string | Media;
+    id?: string | null;
+  }[];
+  skipSync?: boolean | null;
+  serviceLine: string | ServiceLine;
+  focusAreas: (string | ServiceLine)[];
+  city: (string | City)[];
+  vendor?: (string | null) | User;
   slug?: string | null;
   slugLock?: boolean | null;
-  skipSync?: boolean | null;
-  vendor?: (string | null) | User;
+  listedOn?: string | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -988,11 +1017,13 @@ export interface Vendor {
   id: string;
   user?: (string | null) | User;
   status?: ('pending' | 'approved' | 'blocked' | 'rejected' | 'inactive') | null;
-  displayName?: string | null;
+  companyName: string;
+  displayName: string;
   website?: string | null;
   tagline?: string | null;
   description?: string | null;
-  logo?: (string | null) | Media;
+  locations: Location;
+  logo: string | Media;
   updatedAt: string;
   createdAt: string;
 }
@@ -1072,8 +1103,12 @@ export interface PayloadLockedDocument {
         value: string | City;
       } | null)
     | ({
-        relationTo: 'categories';
-        value: string | Category;
+        relationTo: 'service-lines';
+        value: string | ServiceLine;
+      } | null)
+    | ({
+        relationTo: 'service-features';
+        value: string | ServiceFeature;
       } | null)
     | ({
         relationTo: 'users';
@@ -1244,7 +1279,7 @@ export interface PagesSelect<T extends boolean = true> {
               introContent?: T;
               populateBy?: T;
               relationTo?: T;
-              categories?: T;
+              serviceLines?: T;
               locations?: T;
               limit?: T;
               selectedDocs?: T;
@@ -1292,87 +1327,23 @@ export interface PagesSelect<T extends boolean = true> {
 export interface ServicesSelect<T extends boolean = true> {
   title?: T;
   summary?: T;
-  city?: T;
-  listedOn?: T;
   description?: T;
   description_html?: T;
+  features?: T;
   gallery?:
     | T
     | {
         image?: T;
         id?: T;
       };
-  layout?:
-    | T
-    | {
-        cta?:
-          | T
-          | {
-              richText?: T;
-              links?:
-                | T
-                | {
-                    link?:
-                      | T
-                      | {
-                          type?: T;
-                          newTab?: T;
-                          reference?: T;
-                          url?: T;
-                          label?: T;
-                          appearance?: T;
-                        };
-                    id?: T;
-                  };
-              id?: T;
-              blockName?: T;
-            };
-        content?:
-          | T
-          | {
-              columns?:
-                | T
-                | {
-                    size?: T;
-                    richText?: T;
-                    enableLink?: T;
-                    link?:
-                      | T
-                      | {
-                          type?: T;
-                          newTab?: T;
-                          reference?: T;
-                          url?: T;
-                          label?: T;
-                          appearance?: T;
-                        };
-                    enableIcon?: T;
-                    icon?:
-                      | T
-                      | {
-                          name?: T;
-                          size?: T;
-                          color?: T;
-                        };
-                    id?: T;
-                  };
-              id?: T;
-              blockName?: T;
-            };
-        mediaBlock?:
-          | T
-          | {
-              position?: T;
-              media?: T;
-              id?: T;
-              blockName?: T;
-            };
-      };
-  categories?: T;
+  skipSync?: T;
+  serviceLine?: T;
+  focusAreas?: T;
+  city?: T;
+  vendor?: T;
   slug?: T;
   slugLock?: T;
-  skipSync?: T;
-  vendor?: T;
+  listedOn?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -1412,10 +1383,11 @@ export interface CitiesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories_select".
+ * via the `definition` "service-lines_select".
  */
-export interface CategoriesSelect<T extends boolean = true> {
+export interface ServiceLinesSelect<T extends boolean = true> {
   title?: T;
+  features?: T;
   parent?: T;
   breadcrumbs?:
     | T
@@ -1425,6 +1397,16 @@ export interface CategoriesSelect<T extends boolean = true> {
         label?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "service-features_select".
+ */
+export interface ServiceFeaturesSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1474,10 +1456,24 @@ export interface EmailsSelect<T extends boolean = true> {
 export interface VendorsSelect<T extends boolean = true> {
   user?: T;
   status?: T;
+  companyName?: T;
   displayName?: T;
   website?: T;
   tagline?: T;
   description?: T;
+  locations?:
+    | T
+    | {
+        name?: T;
+        addressLine1?: T;
+        addressLine2?: T;
+        city?: T;
+        state?: T;
+        zipOrPostalCode?: T;
+        country?: T;
+        phone?: T;
+        id?: T;
+      };
   logo?: T;
   updatedAt?: T;
   createdAt?: T;

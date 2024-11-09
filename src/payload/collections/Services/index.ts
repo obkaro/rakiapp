@@ -35,7 +35,6 @@ export const Services: CollectionConfig = {
   //   },
   admin: {
     defaultColumns: ["title", "stripeProductID", "_status"],
-
     livePreview: {
       url: ({ data }) => {
         const path = generatePreviewPath({
@@ -57,43 +56,21 @@ export const Services: CollectionConfig = {
       name: "title",
       type: "text",
       required: true,
+      // admin: {
+      //   description: "The title of the service you're offering",
+      // },
+      minLength: 4,
+      maxLength: 72,
     },
     {
       name: "summary",
       type: "text",
       required: true,
-    },
-    {
-      name: "city",
-      type: "relationship",
-      relationTo: "cities",
-      hasMany: true,
       admin: {
-        position: "sidebar",
-        sortOptions: "city name",
-        description: "Select the city where this service is located",
+        description: "A quick summary for potential customers to understand",
       },
-      required: true,
-    },
-    {
-      name: "listedOn",
-      type: "date",
-      admin: {
-        date: {
-          pickerAppearance: "dayAndTime",
-        },
-        position: "sidebar",
-      },
-      hooks: {
-        beforeChange: [
-          ({ siblingData, value }) => {
-            if (siblingData._status === "published" && !value) {
-              return new Date();
-            }
-            return value;
-          },
-        ],
-      },
+      minLength: 12,
+      maxLength: 124,
     },
     {
       type: "tabs",
@@ -118,12 +95,27 @@ export const Services: CollectionConfig = {
                 },
               }),
               label: false,
-              required: false,
+              required: true,
+              admin: {
+                description:
+                  "Detailed description of the service you're offering. Feel free to use our rich text editor to style your content to your liking.",
+              },
             },
             lexicalHTML("description", { name: "description_html" }),
             {
+              name: "features",
+              type: "relationship",
+              relationTo: "service-features",
+              hasMany: true,
+              admin: {
+                description:
+                  "Select the features your service offers. Include as many as apply.",
+              },
+            },
+            {
               name: "gallery",
               type: "array",
+              required: true,
               fields: [
                 {
                   name: "image",
@@ -137,274 +129,15 @@ export const Services: CollectionConfig = {
                 singular: "Image",
               },
             },
-            {
-              name: "layout",
-              type: "blocks",
-              blocks: [CallToAction, Content, MediaBlock],
-            },
           ],
-          label: "Content",
+          label: "Details",
+          admin: {
+            description:
+              "Upload high quality images to showcase your service. This will help potential customers understand what you offer.",
+          },
         },
-        // {
-        //   fields: [
-        //     {
-        //       name: "enableVariants",
-        //       type: "checkbox",
-        //     },
-        //     {
-        //       name: "variants",
-        //       type: "group",
-        //       admin: {
-        //         condition: (data, siblingData) =>
-        //           Boolean(siblingData.enableVariants),
-        //       },
-        //       fields: [
-        //         {
-        //           name: "options",
-        //           type: "array",
-        //           admin: {
-        //             components: {
-        //               RowLabel:
-        //                 "@/collections/Products/ui/RowLabels/KeyLabel#KeyLabel",
-        //             },
-        //             initCollapsed: true,
-        //           },
-        //           fields: [
-        //             {
-        //               type: "row",
-        //               fields: [
-        //                 {
-        //                   name: "label",
-        //                   type: "text",
-        //                   required: true,
-        //                 },
-        //                 {
-        //                   name: "slug",
-        //                   type: "text",
-        //                   required: true,
-        //                 },
-        //               ],
-        //             },
-        //             {
-        //               name: "values",
-        //               type: "array",
-        //               admin: {
-        //                 components: {
-        //                   RowLabel:
-        //                     "@/collections/Products/ui/RowLabels/OptionLabel#OptionLabel",
-        //                 },
-        //                 initCollapsed: true,
-        //               },
-        //               fields: [
-        //                 {
-        //                   type: "row",
-        //                   fields: [
-        //                     {
-        //                       name: "label",
-        //                       type: "text",
-        //                       required: true,
-        //                     },
-        //                     {
-        //                       name: "slug",
-        //                       type: "text",
-        //                       required: true,
-        //                     },
-        //                   ],
-        //                 },
-        //               ],
-        //             },
-        //           ],
-        //           label: "Variant options",
-        //           minRows: 1,
-        //         },
-        //         {
-        //           name: "variants",
-        //           type: "array",
-        //           admin: {
-        //             components: {
-        //               RowLabel:
-        //                 "@/collections/Products/ui/RowLabels/VariantLabel#VariantLabel",
-        //             },
-        //             condition: (data, siblingData) => {
-        //               return Boolean(siblingData?.options?.length);
-        //             },
-        //           },
-        //           fields: [
-        //             {
-        //               name: "options",
-        //               type: "text",
-        //               admin: {
-        //                 components: {
-        //                   Field:
-        //                     "@/collections/Products/ui/VariantSelect#VariantSelect",
-        //                 },
-        //               },
-        //               hasMany: true,
-        //               required: true,
-        //             },
-        //             {
-        //               name: "stripeProductID",
-        //               type: "text",
-        //               admin: {
-        //                 components: {
-        //                   Field:
-        //                     "@/collections/Products/ui/StripeProductSelect#StripeProductSelect",
-        //                 },
-        //               },
-        //               label: "Stripe Product ID",
-        //             },
-        //             {
-        //               type: "row",
-        //               fields: [
-        //                 {
-        //                   name: "stock",
-        //                   type: "number",
-        //                   admin: {
-        //                     description:
-        //                       "Define stock for this variant. A stock of 0 disables checkout for this variant.",
-        //                     width: "50%",
-        //                   },
-        //                   defaultValue: 0,
-        //                   required: true,
-        //                 },
-        //               ],
-        //             },
-        //             {
-        //               name: "info",
-        //               type: "json",
-        //               admin: {
-        //                 hidden: true,
-        //                 readOnly: true,
-        //               },
-        //             },
-        //             {
-        //               name: "images",
-        //               type: "array",
-        //               fields: [
-        //                 {
-        //                   name: "image",
-        //                   type: "upload",
-        //                   relationTo: "media",
-        //                 },
-        //               ],
-        //             },
-        //           ],
-        //           labels: {
-        //             plural: "Variants",
-        //             singular: "Variant",
-        //           },
-        //           minRows: 1,
-        //           validate: (value, { siblingData }) => {
-        //             // if (siblingData.variants.length) {
-        //             //   const hasDuplicate = siblingData.variants.some(
-        //             //     (variant: ProductVariant, index) => {
-        //             //       // Check this against other variants
-        //             //       const dedupedArray = [...siblingData.variants].filter(
-        //             //         (_, i) => i !== index
-        //             //       );
-
-        //             //       // Join the arrays then compare the strings, note that we sort the array before it's saved in the custom component
-        //             //       const test = dedupedArray.find(
-        //             //         (otherOption: ProductVariant) => {
-        //             //           const firstOption = otherOption?.options?.join(
-        //             //             ""
-        //             //           );
-        //             //           const secondOption = variant?.options?.join("");
-
-        //             //           return firstOption === secondOption;
-        //             //         }
-        //             //       );
-
-        //             //       return Boolean(test);
-        //             //     }
-        //             //   );
-
-        //             //   if (hasDuplicate) {
-        //             //     return "There is a duplicate variant";
-        //             //   }
-        //             // }
-
-        //             return true;
-        //           },
-        //         },
-        //       ],
-        //       label: false,
-        //     },
-        //     {
-        //       name: "stripeProductID",
-        //       type: "text",
-        //       admin: {
-        //         components: {
-        //           Field:
-        //             "@/collections/Products/ui/StripeProductSelect#StripeProductSelect",
-        //         },
-        //         condition: (data) => !data.enableVariants,
-        //       },
-        //       label: "Stripe Product",
-        //     },
-        //     {
-        //       name: "info",
-        //       type: "json",
-        //       admin: {
-        //         condition: (data) => !data.enableVariants,
-        //         hidden: true,
-        //       },
-        //     },
-        //     {
-        //       name: "stock",
-
-        //       type: "number",
-        //       admin: {
-        //         condition: (data) => !data.enableVariants,
-        //         description:
-        //           "Define stock for this product. A stock of 0 disables checkout for this product.",
-        //       },
-        //       defaultValue: 0,
-        //       required: true,
-        //     },
-        //     {
-        //       name: "price",
-        //       type: "number",
-        //       admin: {
-        //         hidden: true,
-        //       },
-        //     },
-        //     {
-        //       name: "currency",
-        //       type: "text",
-        //       admin: {
-        //         hidden: true,
-        //       },
-        //     },
-        //   ],
-        //   label: "Product Details",
-        // },
       ],
     },
-    {
-      name: "categories",
-      type: "relationship",
-      admin: {
-        position: "sidebar",
-        sortOptions: "title",
-      },
-      hasMany: false,
-      relationTo: "categories",
-    },
-    // {
-    //   name: "relatedProducts",
-    //   type: "relationship",
-    //   filterOptions: ({ id }) => {
-    //     return {
-    //       id: {
-    //         not_in: [id],
-    //       },
-    //     };
-    //   },
-    //   hasMany: true,
-    //   relationTo: "services",
-    // },
-    ...slugField(),
     {
       name: "skipSync",
       type: "checkbox",
@@ -416,13 +149,88 @@ export const Services: CollectionConfig = {
       label: "Skip Sync",
     },
     {
+      name: "serviceLine",
+      type: "relationship",
+      required: true,
+      admin: {
+        position: "sidebar",
+        sortOptions: "title",
+        description:
+          "Select a service line your service belongs to. This helps us categorize your service, making it easier for customers to find.",
+      },
+      hasMany: false,
+      relationTo: "service-lines",
+      filterOptions: ({ data }) => {
+        return {
+          parent: {
+            exists: false,
+          },
+        };
+      },
+    },
+    {
+      name: "focusAreas",
+      type: "relationship",
+      relationTo: "service-lines",
+      required: true,
+      hasMany: true,
+      filterOptions: ({ data }) => {
+        return {
+          parent: {
+            equals: data?.serviceLine,
+          },
+        };
+      },
+      admin: {
+        position: "sidebar",
+        sortOptions: "title",
+        description:
+          "Select all the focus areas your service addresses. Include as many as apply.",
+      },
+    },
+    {
+      name: "city",
+      type: "relationship",
+      relationTo: "cities",
+      hasMany: true,
+      admin: {
+        position: "sidebar",
+        sortOptions: "city name",
+        description:
+          "Select the city where your service will be offered. Include as many as apply",
+      },
+      required: true,
+    },
+    {
       name: "vendor",
       type: "relationship",
       relationTo: "users",
       hasMany: false,
       admin: {
-        readOnly: false,
+        readOnly: true,
         position: "sidebar",
+      },
+    },
+    ...slugField(),
+    {
+      name: "listedOn",
+      type: "date",
+      admin: {
+        date: {
+          pickerAppearance: "dayAndTime",
+        },
+        position: "sidebar",
+        readOnly: true,
+      },
+      hooks: {
+        beforeChange: [
+          ({ siblingData, value }) => {
+            if (siblingData._status === "published" && !value) {
+              return new Date();
+            }
+            return value;
+          },
+        ],
       },
     },
   ],

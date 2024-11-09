@@ -57,14 +57,14 @@ export const Archive: Block = {
       ],
     },
     {
-      name: "categories",
+      name: "serviceLines",
       type: "relationship",
       admin: {
         condition: (_, siblingData) => siblingData.populateBy === "collection",
       },
       hasMany: true,
-      label: "Categories To Show",
-      relationTo: "categories",
+      label: "Service Lines To Show",
+      relationTo: "service-lines",
     },
     {
       name: "locations",

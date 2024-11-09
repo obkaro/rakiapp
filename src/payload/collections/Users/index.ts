@@ -16,12 +16,12 @@ const Users: CollectionConfig = {
       return user?.isAdmin ? true : user?.isVendor ? true : false;
     },
     unlock: ({ req: { user } }) => {
-      return user?.isAdmin ? true : user?.isVendor ? true : false;
+      return user?.isAdmin ? true : false;
     },
     create: anyone,
     delete: isAdmin,
-    read: anyone,
-    update: anyone,
+    read: adminOrSelf,
+    update: adminOrSelf,
   },
   admin: {
     defaultColumns: ["displayName", "email"],
