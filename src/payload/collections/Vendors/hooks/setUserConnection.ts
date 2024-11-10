@@ -1,13 +1,15 @@
-import type { CollectionAfterChangeHook } from "payload";
+import { Vendor } from "@/payload-types";
+import type { CollectionBeforeChangeHook } from "payload";
 
-export const setUserConnection: CollectionAfterChangeHook = async ({
-  doc,
+export const setUserConnection: CollectionBeforeChangeHook<Vendor> = async ({
+  data,
   operation,
   req,
   collection,
 }) => {
-  if (operation === "create") {
-    doc.user = req?.user?.id;
-    return doc;
+  if (operation === "create" || operation === "update") {
+    data.user = req?.user?.id;
+    data.status = "pending";
   }
+  return data;
 };

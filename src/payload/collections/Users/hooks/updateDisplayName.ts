@@ -1,11 +1,11 @@
 import { User } from "@/payload-types";
-import type { CollectionAfterChangeHook } from "payload";
+import type { CollectionBeforeChangeHook } from "payload";
 
-export const updateDisplayName: CollectionAfterChangeHook<User> = async ({
-  doc,
+export const updateDisplayName: CollectionBeforeChangeHook<User> = async ({
+  data,
 }) => {
-  if (doc.firstName && doc.lastName) {
-    doc.displayName = `${doc.firstName} ${doc.lastName}`;
-    return doc;
+  if (data.firstName && data.lastName) {
+    data.displayName = `${data.firstName} ${data.lastName}`;
   }
+  return data;
 };

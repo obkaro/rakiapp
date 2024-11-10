@@ -18,7 +18,7 @@ export const ArchiveBlock: React.FC<
 > = async (props) => {
   const {
     id,
-    categories,
+    serviceLines,
     introContent,
     limit: limitFromProps,
     populateBy,
@@ -33,9 +33,9 @@ export const ArchiveBlock: React.FC<
   if (populateBy === "collection") {
     const payload = await getPayloadHMR({ config: configPromise });
 
-    const flattenedCategories = categories?.map((category) => {
-      if (typeof category === "object") return category.id;
-      else return category;
+    const flattenedServiceLines = serviceLines?.map((serviceLine) => {
+      if (typeof serviceLine === "object") return serviceLine.id;
+      else return serviceLine;
     });
 
     const flattenedLocations = locations?.map((location) => {

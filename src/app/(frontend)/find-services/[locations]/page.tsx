@@ -49,7 +49,7 @@ export default async function ServicesByLocationPage({ params }: Props) {
       {location ? (
         <h1 className="mt-12 mb-8 container text-3xl">
           {services.docs?.length === 0
-            ? `No hits found for ${cityDoc?.["display name"]}`
+            ? `No hits found for `
             : `Adventures in `}
           {
             <span className="font-bold not-italic text-4xl">

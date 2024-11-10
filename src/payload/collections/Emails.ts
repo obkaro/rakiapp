@@ -6,7 +6,7 @@ import { CallToAction } from "@/payload/blocks/CallToAction/config";
 import { Content } from "@/payload/blocks/Content/config";
 import { MediaBlock } from "@/payload/blocks/MediaBlock/config";
 
-import { lexicalEditor } from "@payloadcms/richtext-lexical";
+import { lexicalEditor, lexicalHTML } from "@payloadcms/richtext-lexical";
 
 import {
   BoldFeature,
@@ -24,6 +24,7 @@ import {
   FixedToolbarFeature,
   HorizontalRuleFeature,
   UploadFeature,
+  HTMLConverterFeature,
 } from "@payloadcms/richtext-lexical";
 
 import { slugField } from "@/payload/fields/slug";
@@ -66,10 +67,18 @@ export const Emails: CollectionConfig = {
       name: "title",
       type: "text",
       required: true,
+      admin: {
+        description: "The subject of the email",
+      },
     },
     {
       name: "description",
       type: "text",
+      admin: {
+        description:
+          "A description just for your reference. This will not be sent as part of the email.",
+        placeholder: "(Optional)",
+      },
     },
     {
       name: "body",
@@ -92,9 +101,11 @@ export const Emails: CollectionConfig = {
           FixedToolbarFeature(),
           HorizontalRuleFeature(),
           UploadFeature(),
+          HTMLConverterFeature(),
         ],
       }),
     },
+    lexicalHTML("body", { name: "body_html" }),
     {
       name: "publishedAt",
       type: "date",

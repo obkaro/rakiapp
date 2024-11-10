@@ -66,7 +66,7 @@ const Users: CollectionConfig = {
   ],
   timestamps: true,
   hooks: {
-    afterChange: [updateDisplayName],
+    beforeChange: [updateDisplayName],
   },
 };
 

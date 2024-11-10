@@ -15,7 +15,7 @@ export type Location = {
   addressLine1: string;
   addressLine2?: string | null;
   city: string;
-  state: string;
+  state?: string | null;
   zipOrPostalCode?: string | null;
   country: string;
   phone: string;
@@ -1002,6 +1002,7 @@ export interface Email {
     };
     [k: string]: unknown;
   };
+  body_html?: string | null;
   publishedAt?: string | null;
   slug?: string | null;
   slugLock?: boolean | null;
@@ -1442,6 +1443,7 @@ export interface EmailsSelect<T extends boolean = true> {
   title?: T;
   description?: T;
   body?: T;
+  body_html?: T;
   publishedAt?: T;
   slug?: T;
   slugLock?: T;

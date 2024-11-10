@@ -4,6 +4,7 @@ import { isAdmin } from "@/payload/access/isAdmin";
 import { anyone } from "@/payload/access/anyone";
 import { authenticated } from "@/payload/access/authenticated";
 import { setUserConnection } from "./hooks/setUserConnection";
+import { sendEmailNotification } from "./hooks/sendEmailNotification";
 
 export const Vendors: CollectionConfig = {
   slug: "vendors",
@@ -20,7 +21,8 @@ export const Vendors: CollectionConfig = {
     useAsTitle: "displayName",
   },
   hooks: {
-    afterChange: [setUserConnection],
+    beforeChange: [setUserConnection],
+    afterChange: [sendEmailNotification],
   },
   fields: [
     {
@@ -35,10 +37,16 @@ export const Vendors: CollectionConfig = {
     {
       name: "status",
       type: "select",
-      options: ["pending", "approved", "blocked", "rejected", "inactive"],
+      options: [
+        { label: "Pending", value: "pending" },
+        { label: "Approved", value: "approved" },
+        { label: "Blocked", value: "blocked" },
+        { label: "Rejected", value: "rejected" },
+        { label: "Inactive", value: "inactive" },
+      ],
       admin: {
         position: "sidebar",
-        readOnly: true,
+        readOnly: !isAdmin,
       },
     },
     {

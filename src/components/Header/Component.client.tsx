@@ -18,7 +18,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = async ({ header }) => {
 
   return (
     <header
-      className="container relative z-20 py-8 flex justify-between"
+      className="container relative z-20 py-6 flex justify-between"
       // {...(theme ? { "data-theme": theme } : {})}
     >
       <Link href="/" className="flex items-center gap-2">
