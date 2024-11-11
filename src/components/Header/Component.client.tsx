@@ -1,5 +1,5 @@
 // "use client";
-import { useHeaderTheme } from "@/lib/providers/HeaderTheme";
+// import { useHeaderTheme } from "@/lib/providers/HeaderTheme";
 import Link from "next/link";
 
 import type { Header } from "@/payload-types";
@@ -7,7 +7,7 @@ import type { Header } from "@/payload-types";
 import { Logo } from "@/components/Logo/Logo";
 import { HeaderNav } from "./Nav";
 
-import { getMeUser } from "@/lib/utilities/getMeUser";
+import { getMeUser } from "@/lib/data/getMeUser";
 
 interface HeaderClientProps {
   header: Header;

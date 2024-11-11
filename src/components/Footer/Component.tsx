@@ -1,4 +1,4 @@
-import { getCachedGlobal } from "@/lib/utilities/getGlobals";
+import { getCachedGlobal } from "@/lib/data/getGlobals";
 import Link from "next/link";
 import React from "react";
 
