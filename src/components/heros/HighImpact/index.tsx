@@ -1,6 +1,6 @@
-"use client";
-import { useHeaderTheme } from "@/lib/providers/HeaderTheme";
-import React, { useEffect, useState } from "react";
+// "use client";
+// import { useHeaderTheme } from "@/lib/providers/HeaderTheme";
+// import React, { useEffect, useState } from "react";
 
 import type { City, Page } from "@/payload-types";
 
@@ -11,15 +11,15 @@ import { SelectLocation } from "@/components/SelectLocation";
 
 import { getPayloadHMR } from "@payloadcms/next/utilities";
 import config from "@payload-config";
-import { CollectionAfterChangeHook } from "payload";
+// import { CollectionAfterChangeHook } from "payload";
 
-export const HighImpactHero: React.FC<Page["hero"]> = ({
+export const HighImpactHero: React.FC<Page["hero"]> = async ({
   links,
   media,
   richText,
 }) => {
-  const { setHeaderTheme } = useHeaderTheme();
-  const [cities, setCities] = useState<City[]>([]);
+  // const { setHeaderTheme } = useHeaderTheme();
+  // const [cities, setCities] = useState<City[]>([]);
   // const destinations = [
   //   "Lagos, Nigeria",
   //   "Cape Town, South Africa",
@@ -41,22 +41,26 @@ export const HighImpactHero: React.FC<Page["hero"]> = ({
   //   );
   //   setCityNames(cityNames);
   // };
+  const payload = await getPayloadHMR({ config });
+  const cities = await payload.find({
+    collection: "cities",
+  });
 
-  useEffect(() => {
-    setHeaderTheme("dark");
+  // useEffect(() => {
+  //   setHeaderTheme("dark");
 
-    const fetchCityNames = async () => {
-      try {
-        const response = await fetch("/api/cities"); // Assuming you have an API route for this
-        const cities = await response.json();
-        setCities(cities.docs);
-      } catch (error) {
-        console.error("Failed to fetch city names:", error);
-      }
-    };
+  //   const fetchCityNames = async () => {
+  //     try {
+  //       const response = await fetch("/api/cities"); // Assuming you have an API route for this
+  //       const cities = await response.json();
+  //       setCities(cities.docs);
+  //     } catch (error) {
+  //       console.error("Failed to fetch city names:", error);
+  //     }
+  //   };
 
-    fetchCityNames();
-  }, []);
+  //   fetchCityNames();
+  // }, [setHeaderTheme]);
 
   return (
     <div
@@ -72,7 +76,7 @@ export const HighImpactHero: React.FC<Page["hero"]> = ({
               enableGutter={false}
             />
           )}
-          <SelectLocation locations={cities} />
+          <SelectLocation locations={cities.docs} />
           {Array.isArray(links) && links.length > 0 && (
             <ul className="flex gap-4">
               {links.map(({ link }, i) => {
@@ -88,17 +92,17 @@ export const HighImpactHero: React.FC<Page["hero"]> = ({
       </div>
       <div className="min-h-[50vh] select-none">
         {media && typeof media === "object" && (
-          <React.Fragment>
+          <>
             <Media
-              fill
               imgClassName="-z-10 object-cover"
               priority
               resource={media}
+              fill
             />
             <div className="absolute pointer-events-none left-0 bottom-0 w-full h-full bg-gradient-to-t from-black via-black/20 to-black/20">
               <div className="absolute left-0 bottom-0 w-full h-1/2 bg-gradient-to-t from-black to-transparent" />
             </div>
-          </React.Fragment>
+          </>
         )}
       </div>
     </div>

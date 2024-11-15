@@ -1,5 +1,6 @@
 // "use client";
 // import { useHeaderTheme } from "@/lib/providers/HeaderTheme";
+import "server-only";
 import Link from "next/link";
 
 import type { Header } from "@/payload-types";
